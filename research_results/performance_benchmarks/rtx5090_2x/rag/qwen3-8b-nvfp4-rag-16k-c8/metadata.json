@@ -1,0 +1,35 @@
+{
+  "benchmark_name": "qwen3-8b-nvfp4-rag-16k-c8",
+  "model": "nvidia/Qwen3-8B-NVFP4",
+  "suite_name": "RTX 5090 2x GPU",
+  "run_id": "20251218_001143",
+  "timestamp": "2025-12-18T00:55:31.603760",
+  "gpu": "RTX 5090 x2",
+  "instance_id": 28971162,
+  "vllm_config": {
+    "max_model_len": 17408,
+    "gpu_memory_utilization": 0.9,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto",
+    "tensor_parallel_size": 2
+  },
+  "aiperf_config": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 8,
+    "synthetic_input_tokens_mean": 16384,
+    "output_tokens_mean": 512,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle",
+    "extra_inputs": {
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    }
+  },
+  "lm_eval_config": {},
+  "benchmark_type": "performance",
+  "status": "success",
+  "used_fp8_kv_cache": false
+}

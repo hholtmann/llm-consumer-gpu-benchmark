@@ -1,0 +1,44 @@
+{
+  "name": "qwen3-8b-nvfp4-agentic-lora-c64",
+  "model": "nvidia/Qwen3-8B-NVFP4",
+  "lora_adapters": [
+    {
+      "name": "customer-support-faq",
+      "path": "holtmann/qwen3-8b-customer-support-faq-lora"
+    },
+    {
+      "name": "technical-docs",
+      "path": "holtmann/qwen3-8b-technical-docs-lora"
+    },
+    {
+      "name": "json-output",
+      "path": "holtmann/qwen3-8b-json-output-lora"
+    }
+  ],
+  "vllm": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.8,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto",
+    "tensor_parallel_size": 2,
+    "enable_lora": true,
+    "max_loras": 3,
+    "max_lora_rank": 64
+  },
+  "aiperf": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 64,
+    "synthetic_input_tokens_mean": 2048,
+    "output_tokens_mean": 512,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle",
+    "model_selection_strategy": "random",
+    "extra_inputs": {
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    }
+  }
+}

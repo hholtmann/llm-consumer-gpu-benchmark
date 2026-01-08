@@ -1,0 +1,15 @@
+{
+  "name": "qwen3-8b-nvfp4-hellaswag",
+  "type": "quality",
+  "model": "nvidia/Qwen3-8B-NVFP4",
+  "vllm": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "dtype": "auto"
+  },
+  "lm_eval": {
+    "tasks": "hellaswag",
+    "num_fewshot": 0,
+    "batch_size": "auto"
+  }
+}

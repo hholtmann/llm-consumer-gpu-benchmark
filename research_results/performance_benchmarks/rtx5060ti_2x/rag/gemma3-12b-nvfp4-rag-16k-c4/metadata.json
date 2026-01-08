@@ -1,0 +1,30 @@
+{
+  "benchmark_name": "gemma3-12b-nvfp4-rag-16k-c4",
+  "model": "holtmann/gemma-3-12b-it-NVFP4",
+  "suite_name": "RTX 5060 Ti 2x - Retry Failed",
+  "run_id": "20260101_100608",
+  "timestamp": "2026-01-01T11:20:01.372490",
+  "gpu": "RTX 5060 Ti x2",
+  "instance_id": 29400400,
+  "vllm_config": {
+    "max_model_len": 16384,
+    "gpu_memory_utilization": 0.8,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto",
+    "tensor_parallel_size": 2
+  },
+  "aiperf_config": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 4,
+    "synthetic_input_tokens_mean": 16000,
+    "output_tokens_mean": 256,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle"
+  },
+  "lm_eval_config": {},
+  "benchmark_type": "performance",
+  "status": "success",
+  "used_fp8_kv_cache": false
+}

@@ -1,0 +1,25 @@
+{
+  "benchmark_name": "gemma3-27b-w4a16-hellaswag",
+  "model": "RedHatAI/gemma-3-27b-it-quantized.w4a16",
+  "suite_name": "RTX 5090 Quality Evaluation",
+  "run_id": "20251202_151837",
+  "timestamp": "2025-12-02T15:57:06.500263",
+  "gpu": "RTX 5090 x1",
+  "instance_id": 28431436,
+  "vllm_config": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "enable_chunked_prefill": true,
+    "max_num_batched_tokens": 512,
+    "max_num_seqs": 16,
+    "dtype": "auto"
+  },
+  "aiperf_config": {},
+  "lm_eval_config": {
+    "tasks": "hellaswag",
+    "num_fewshot": 0,
+    "batch_size": "auto"
+  },
+  "benchmark_type": "quality",
+  "status": "success"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "gemma3-12b-w4a16-mmlu",
+  "type": "quality",
+  "model": "RedHatAI/gemma-3-12b-it-quantized.w4a16",
+  "vllm": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "dtype": "auto",
+    "enable_chunked_prefill": true,
+    "max_num_batched_tokens": 512
+  },
+  "lm_eval": {
+    "tasks": "mmlu",
+    "num_fewshot": 5,
+    "batch_size": 8
+  }
+}

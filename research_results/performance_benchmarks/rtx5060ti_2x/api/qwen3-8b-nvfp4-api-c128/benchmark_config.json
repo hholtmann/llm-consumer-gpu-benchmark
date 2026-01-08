@@ -1,0 +1,21 @@
+{
+  "name": "qwen3-8b-nvfp4-api-c128",
+  "model": "nvidia/Qwen3-8B-NVFP4",
+  "vllm": {
+    "max_model_len": 1024,
+    "gpu_memory_utilization": 0.8,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto",
+    "tensor_parallel_size": 2
+  },
+  "aiperf": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 128,
+    "synthetic_input_tokens_mean": 256,
+    "output_tokens_mean": 256,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle"
+  }
+}

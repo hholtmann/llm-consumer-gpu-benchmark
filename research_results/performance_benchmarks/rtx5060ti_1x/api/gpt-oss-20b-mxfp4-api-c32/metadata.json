@@ -1,0 +1,29 @@
+{
+  "benchmark_name": "gpt-oss-20b-mxfp4-api-c32",
+  "model": "openai/gpt-oss-20b",
+  "suite_name": "RTX 5060 Ti 1x GPU",
+  "run_id": "20251220_130330",
+  "timestamp": "2025-12-20T15:18:14.351315",
+  "gpu": "RTX 5060 Ti x1",
+  "instance_id": 29050188,
+  "vllm_config": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto"
+  },
+  "aiperf_config": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 32,
+    "synthetic_input_tokens_mean": 256,
+    "output_tokens_mean": 256,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle"
+  },
+  "lm_eval_config": {},
+  "benchmark_type": "performance",
+  "status": "success",
+  "used_fp8_kv_cache": true
+}

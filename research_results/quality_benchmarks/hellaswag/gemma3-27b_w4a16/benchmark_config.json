@@ -1,0 +1,18 @@
+{
+  "name": "gemma3-27b-w4a16-hellaswag",
+  "type": "quality",
+  "model": "RedHatAI/gemma-3-27b-it-quantized.w4a16",
+  "vllm": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "enable_chunked_prefill": true,
+    "max_num_batched_tokens": 512,
+    "max_num_seqs": 16,
+    "dtype": "auto"
+  },
+  "lm_eval": {
+    "tasks": "hellaswag",
+    "num_fewshot": 0,
+    "batch_size": "auto"
+  }
+}

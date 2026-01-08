@@ -1,0 +1,29 @@
+{
+  "benchmark_name": "gpt-oss-20b-mxfp4-rag-32k-c4",
+  "model": "openai/gpt-oss-20b",
+  "suite_name": "RTX 5090 1x GPU",
+  "run_id": "20251218_183557",
+  "timestamp": "2025-12-19T00:20:16.373194",
+  "gpu": "RTX 5090 x1",
+  "instance_id": 28996727,
+  "vllm_config": {
+    "max_model_len": 33792,
+    "gpu_memory_utilization": 0.9,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto"
+  },
+  "aiperf_config": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 4,
+    "synthetic_input_tokens_mean": 32768,
+    "output_tokens_mean": 512,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle"
+  },
+  "lm_eval_config": {},
+  "benchmark_type": "performance",
+  "status": "success",
+  "used_fp8_kv_cache": false
+}

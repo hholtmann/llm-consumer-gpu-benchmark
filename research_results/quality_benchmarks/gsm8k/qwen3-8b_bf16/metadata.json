@@ -1,0 +1,22 @@
+{
+  "benchmark_name": "qwen3-8b-bf16-gsm8k",
+  "model": "Qwen/Qwen3-8B",
+  "suite_name": "RTX 5090 Quality Evaluation",
+  "run_id": "20251201_020244",
+  "timestamp": "2025-12-01T03:54:03.435730",
+  "gpu": "RTX 5090 x1",
+  "instance_id": 28380887,
+  "vllm_config": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "dtype": "bfloat16"
+  },
+  "aiperf_config": {},
+  "lm_eval_config": {
+    "tasks": "gsm8k",
+    "num_fewshot": 8,
+    "batch_size": "auto"
+  },
+  "benchmark_type": "quality",
+  "status": "success"
+}

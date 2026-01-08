@@ -1,0 +1,21 @@
+{
+  "name": "gemma3-12b-nvfp4-rag-16k-c4",
+  "model": "holtmann/gemma-3-12b-it-NVFP4",
+  "vllm": {
+    "max_model_len": 16384,
+    "gpu_memory_utilization": 0.8,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto",
+    "tensor_parallel_size": 2
+  },
+  "aiperf": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 4,
+    "synthetic_input_tokens_mean": 16000,
+    "output_tokens_mean": 256,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle"
+  }
+}

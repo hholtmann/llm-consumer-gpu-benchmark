@@ -1,0 +1,24 @@
+{
+  "benchmark_name": "gemma3-12b-bf16-gsm8k",
+  "model": "google/gemma-3-12b-it",
+  "suite_name": "RTX 5090 Quality Evaluation",
+  "run_id": "20251202_023014",
+  "timestamp": "2025-12-02T02:45:18.407337",
+  "gpu": "RTX 5090 x1",
+  "instance_id": 28411538,
+  "vllm_config": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.95,
+    "enable_chunked_prefill": true,
+    "max_num_batched_tokens": 512,
+    "dtype": "bfloat16"
+  },
+  "aiperf_config": {},
+  "lm_eval_config": {
+    "tasks": "gsm8k",
+    "num_fewshot": 8,
+    "batch_size": "auto"
+  },
+  "benchmark_type": "quality",
+  "status": "success"
+}

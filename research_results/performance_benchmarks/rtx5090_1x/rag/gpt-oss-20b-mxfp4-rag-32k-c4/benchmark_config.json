@@ -1,0 +1,20 @@
+{
+  "name": "gpt-oss-20b-mxfp4-rag-32k-c4",
+  "model": "openai/gpt-oss-20b",
+  "vllm": {
+    "max_model_len": 33792,
+    "gpu_memory_utilization": 0.9,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto"
+  },
+  "aiperf": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 4,
+    "synthetic_input_tokens_mean": 32768,
+    "output_tokens_mean": 512,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle"
+  }
+}

@@ -1,0 +1,249 @@
+# =============================================================================
+# LLM GPU Benchmark Configuration Template
+# =============================================================================
+# Copy this file and customize for your GPU configuration.
+# See README_RELEASE.md for full documentation.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Suite Metadata
+# -----------------------------------------------------------------------------
+name: RTX XXXX Xx GPU                    # Human-readable name
+description: >
+  Benchmark suite for RTX XXXX with X GB VRAM.
+  Workloads: RAG (long context), API (high concurrency), Agentic (LoRA)
+
+# -----------------------------------------------------------------------------
+# vast.ai Instance Configuration
+# -----------------------------------------------------------------------------
+instance:
+  gpu_type: RTX XXXX                     # GPU model name on vast.ai
+  gpu_count: 1                           # 1 for single GPU, 2 for tensor parallel
+  disk_space_gb: 100                     # Disk space for models (100GB recommended)
+  image: holtmann/llm-benchmark:latest   # Docker image with vLLM + aiperf
+  max_bid_price: 2.0                     # Maximum $/hour for spot instance
+  ssh_timeout: 900                       # SSH connection timeout (seconds)
+  # min_download_speed: 1000             # Optional: minimum Mbps for model downloads
+
+# -----------------------------------------------------------------------------
+# S3 Upload Configuration
+# -----------------------------------------------------------------------------
+s3:
+  bucket: ${S3_BUCKET_NAME}              # From .env file
+  prefix: benchmarks/rtx_xxxx_xx         # Unique prefix for this config
+  upload_json: true                      # Upload detailed JSON results
+  upload_csv: true                       # Upload CSV summary
+  upload_logs: true                      # Upload vLLM and GPU logs
+  compress_logs: true                    # Gzip compress logs
+  timestamp_format: '%Y%m%d_%H%M%S'      # Timestamp format for result folders
+
+# -----------------------------------------------------------------------------
+# Benchmarks
+# -----------------------------------------------------------------------------
+# Each benchmark runs sequentially. The suite auto-restarts vLLM between
+# benchmarks if the model or vLLM config changes.
+#
+# Naming convention: {model}-{quantization}-{workload}-{context}-c{concurrency}
+# Examples:
+#   - qwen3-8b-nvfp4-rag-8k-c8     (RAG workload, 8k context, concurrency 8)
+#   - qwen3-8b-nvfp4-api-c64       (API workload, high concurrency)
+#   - qwen3-8b-nvfp4-agentic-lora-c16 (LoRA multi-tenant)
+# -----------------------------------------------------------------------------
+
+benchmarks:
+
+  # ===========================================================================
+  # RAG WORKLOADS - Long context, moderate concurrency
+  # ===========================================================================
+  # Simulates retrieval-augmented generation with large context windows.
+  # Typical input: 8k-64k tokens of retrieved documents + query
+  # Typical output: 512 tokens response
+  # ===========================================================================
+
+  - name: qwen3-8b-nvfp4-rag-8k-c4
+    model: nvidia/Qwen3-8B-NVFP4          # HuggingFace model ID
+    vllm:
+      # max_model_len = input_tokens + output_tokens + buffer
+      # For 8k input + 512 output + 512 buffer = 9216
+      max_model_len: 9216
+      gpu_memory_utilization: 0.9         # Use 90% of VRAM
+      dtype: auto                         # Let vLLM choose (uses model's native dtype)
+      # tensor_parallel_size: 2           # Uncomment for 2x GPU configs
+    aiperf:
+      endpoint_type: chat                 # Use chat completions API
+      streaming: true                     # Stream responses (measures ITL)
+      concurrency: 4                      # Concurrent requests
+      synthetic_input_tokens_mean: 8192   # ~8k input tokens
+      output_tokens_mean: 512             # ~512 output tokens
+      request_count: 500                  # Total requests to run
+      warmup_request_count: 5             # Warmup requests (not measured)
+      dataset_sampling_strategy: shuffle  # Randomize request order
+      extra_inputs:
+        chat_template_kwargs:
+          enable_thinking: false          # Required for Qwen3 models
+
+  - name: qwen3-8b-nvfp4-rag-16k-c4
+    model: nvidia/Qwen3-8B-NVFP4
+    vllm:
+      max_model_len: 17408                # 16384 + 512 + 512
+      gpu_memory_utilization: 0.9
+      dtype: auto
+    aiperf:
+      endpoint_type: chat
+      streaming: true
+      concurrency: 4
+      synthetic_input_tokens_mean: 16384
+      output_tokens_mean: 512
+      request_count: 500
+      warmup_request_count: 5
+      dataset_sampling_strategy: shuffle
+      extra_inputs:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  # ===========================================================================
+  # API WORKLOADS - Short context, high concurrency
+  # ===========================================================================
+  # Simulates chatbot/API serving with many concurrent users.
+  # Short prompts, high throughput focus.
+  # ===========================================================================
+
+  - name: qwen3-8b-nvfp4-api-c32
+    model: nvidia/Qwen3-8B-NVFP4
+    vllm:
+      max_model_len: 4096                 # Small context for API workload
+      gpu_memory_utilization: 0.9
+      dtype: auto
+    aiperf:
+      endpoint_type: chat
+      streaming: true
+      concurrency: 32                     # High concurrency
+      synthetic_input_tokens_mean: 256    # Short prompts
+      output_tokens_mean: 256             # Short responses
+      request_count: 500
+      warmup_request_count: 5
+      dataset_sampling_strategy: shuffle
+      extra_inputs:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: qwen3-8b-nvfp4-api-c64
+    model: nvidia/Qwen3-8B-NVFP4
+    vllm:
+      max_model_len: 4096
+      gpu_memory_utilization: 0.9
+      dtype: auto
+    aiperf:
+      endpoint_type: chat
+      streaming: true
+      concurrency: 64                     # Even higher concurrency
+      synthetic_input_tokens_mean: 256
+      output_tokens_mean: 256
+      request_count: 500
+      warmup_request_count: 5
+      dataset_sampling_strategy: shuffle
+      extra_inputs:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  # ===========================================================================
+  # AGENTIC WORKLOADS - LoRA adapter switching (multi-tenant)
+  # ===========================================================================
+  # Simulates multi-tenant deployment where different customers have
+  # different fine-tuned adapters. Tests vLLM's LoRA switching overhead.
+  # ===========================================================================
+
+  - name: qwen3-8b-nvfp4-agentic-lora-c16
+    model: nvidia/Qwen3-8B-NVFP4
+    vllm:
+      max_model_len: 4096
+      gpu_memory_utilization: 0.9
+      dtype: auto
+      enable_lora: true                   # Enable LoRA support
+      max_loras: 3                        # Max concurrent adapters in memory
+      lora_modules:                       # Adapters to load
+        - name: customer-support-faq      # Adapter name (used in requests)
+          path: /models/loras/customer-support-faq  # Path on instance
+        - name: technical-docs
+          path: /models/loras/technical-docs
+        - name: json-output
+          path: /models/loras/json-output
+    aiperf:
+      endpoint_type: chat
+      streaming: true
+      concurrency: 16
+      synthetic_input_tokens_mean: 2048   # Medium context for agentic
+      output_tokens_mean: 512
+      request_count: 500
+      warmup_request_count: 5
+      dataset_sampling_strategy: shuffle
+      model_selection_strategy: random    # Randomly select adapter per request
+      extra_inputs:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  # ===========================================================================
+  # QUANTIZATION COMPARISON - Same model, different precisions
+  # ===========================================================================
+  # Compare throughput vs quality tradeoffs across quantization methods.
+  # Only run BF16 on GPUs with sufficient VRAM (32GB+).
+  # ===========================================================================
+
+  # W4A16 quantization (4-bit weights, 16-bit activations)
+  - name: qwen3-8b-w4a16-rag-8k-c4
+    model: RedHatAI/Qwen3-8B-quantized.w4a16
+    vllm:
+      max_model_len: 9216
+      gpu_memory_utilization: 0.9
+      dtype: auto
+    aiperf:
+      endpoint_type: chat
+      streaming: true
+      concurrency: 4
+      synthetic_input_tokens_mean: 8192
+      output_tokens_mean: 512
+      request_count: 500
+      warmup_request_count: 5
+      dataset_sampling_strategy: shuffle
+      extra_inputs:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  # BF16 baseline (only for 32GB+ GPUs)
+  # Uncomment for RTX 5090 or similar
+  # - name: qwen3-8b-bf16-rag-8k-c4
+  #   model: Qwen/Qwen3-8B
+  #   vllm:
+  #     max_model_len: 9216
+  #     gpu_memory_utilization: 0.9
+  #     dtype: bfloat16                   # Explicit BF16
+  #   aiperf:
+  #     endpoint_type: chat
+  #     streaming: true
+  #     concurrency: 4
+  #     synthetic_input_tokens_mean: 8192
+  #     output_tokens_mean: 512
+  #     request_count: 500
+  #     warmup_request_count: 5
+  #     dataset_sampling_strategy: shuffle
+  #     extra_inputs:
+  #       chat_template_kwargs:
+  #         enable_thinking: false
+
+# =============================================================================
+# VRAM PLANNING GUIDE
+# =============================================================================
+# Use this table to plan which benchmarks fit on your GPU:
+#
+# | Model          | Quant  | Base VRAM | +8k ctx | +16k ctx | +32k ctx |
+# |----------------|--------|-----------|---------|----------|----------|
+# | Qwen3-8B       | NVFP4  | ~5 GB     | +1 GB   | +2 GB    | +4 GB    |
+# | Qwen3-8B       | W4A16  | ~5 GB     | +1 GB   | +2 GB    | +4 GB    |
+# | Qwen3-8B       | BF16   | ~16 GB    | +2 GB   | +4 GB    | +8 GB    |
+# | Gemma3-12B     | NVFP4  | ~8 GB     | +1.5 GB | +3 GB    | +6 GB    |
+# | Gemma3-12B     | W4A16  | ~8 GB     | +1.5 GB | +3 GB    | +6 GB    |
+# | Gemma3-27B     | NVFP4  | ~15 GB    | +3 GB   | +6 GB    | +12 GB   |
+# | GPT-OSS-20B    | MXFP4  | ~12 GB    | +2 GB   | +4 GB    | +8 GB    |
+#
+# Rule of thumb: model_vram + context_vram < GPU_VRAM * 0.9
+# =============================================================================

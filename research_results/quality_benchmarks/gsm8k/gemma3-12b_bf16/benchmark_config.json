@@ -1,0 +1,17 @@
+{
+  "name": "gemma3-12b-bf16-gsm8k",
+  "type": "quality",
+  "model": "google/gemma-3-12b-it",
+  "vllm": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.95,
+    "enable_chunked_prefill": true,
+    "max_num_batched_tokens": 512,
+    "dtype": "bfloat16"
+  },
+  "lm_eval": {
+    "tasks": "gsm8k",
+    "num_fewshot": 8,
+    "batch_size": "auto"
+  }
+}

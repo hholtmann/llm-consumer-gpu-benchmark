@@ -1,0 +1,24 @@
+{
+  "benchmark_name": "gemma3-12b-w4a16-mmlu",
+  "model": "RedHatAI/gemma-3-12b-it-quantized.w4a16",
+  "suite_name": "RTX 5090 Addition Test",
+  "run_id": "20251205_043125",
+  "timestamp": "2025-12-05T06:24:37.330242",
+  "gpu": "RTX 5090 x1",
+  "instance_id": 28512735,
+  "vllm_config": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "dtype": "auto",
+    "enable_chunked_prefill": true,
+    "max_num_batched_tokens": 512
+  },
+  "aiperf_config": {},
+  "lm_eval_config": {
+    "tasks": "mmlu",
+    "num_fewshot": 5,
+    "batch_size": 8
+  },
+  "benchmark_type": "quality",
+  "status": "success"
+}

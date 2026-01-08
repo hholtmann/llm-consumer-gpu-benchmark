@@ -1,0 +1,276 @@
+name: RTX 5060 Ti 2x GPU
+description: Full benchmark suite for RTX 5060 Ti 16GB dual GPU with tensor parallelism
+  - RAG, Agentic, API workloads
+instance:
+  gpu_type: RTX 5060 Ti
+  gpu_count: 2
+  disk_space_gb: 100
+  image: holtmann/llm-benchmark:latest
+  max_bid_price: 2.0
+  ssh_timeout: 900
+  min_download_speed: 5000
+s3:
+  bucket: ${S3_BUCKET_NAME}
+  prefix: benchmarks/rtx5060ti_2x
+  upload_json: true
+  upload_csv: true
+  upload_logs: true
+  compress_logs: true
+  timestamp_format: '%Y%m%d_%H%M%S'
+benchmarks:
+- name: gemma3-12b-nvfp4-rag-16k-c4
+  model: holtmann/gemma-3-12b-it-NVFP4
+  vllm:
+    max_model_len: 16384
+    gpu_memory_utilization: 0.8
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 4
+    synthetic_input_tokens_mean: 16000
+    output_tokens_mean: 256
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: gemma3-12b-nvfp4-rag-8k-c8
+  model: holtmann/gemma-3-12b-it-NVFP4
+  vllm:
+    max_model_len: 9216
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 8
+    synthetic_input_tokens_mean: 8192
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: gemma3-12b-w4a16-rag-8k-c8
+  model: RedHatAI/gemma-3-12b-it-quantized.w4a16
+  vllm:
+    max_model_len: 9216
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 8
+    synthetic_input_tokens_mean: 8192
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: gemma3-27b-nvfp4-rag-8k-c4
+  model: holtmann/gemma-3-27b-it-NVFP4
+  vllm:
+    max_model_len: 9216
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 4
+    synthetic_input_tokens_mean: 8192
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: gemma3-27b-w4a16-rag-8k-c4
+  model: RedHatAI/gemma-3-27b-it-quantized.w4a16
+  vllm:
+    max_model_len: 9216
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 4
+    synthetic_input_tokens_mean: 8192
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: gpt-oss-20b-mxfp4-rag-8k-c4
+  model: openai/gpt-oss-20b
+  vllm:
+    max_model_len: 9216
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 4
+    synthetic_input_tokens_mean: 8192
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: qwen3-8b-nvfp4-agentic-lora-c32
+  model: nvidia/Qwen3-8B-NVFP4
+  vllm:
+    max_model_len: 4096
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+    enable_lora: true
+    max_loras: 3
+    lora_modules:
+    - name: customer-support-faq
+      path: /models/loras/customer-support-faq
+    - name: technical-docs
+      path: /models/loras/technical-docs
+    - name: json-output
+      path: /models/loras/json-output
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 32
+    synthetic_input_tokens_mean: 2048
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+    model_selection_strategy: random
+    extra_inputs:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: qwen3-8b-nvfp4-agentic-lora-c64
+  model: nvidia/Qwen3-8B-NVFP4
+  vllm:
+    max_model_len: 4096
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+    enable_lora: true
+    max_loras: 3
+    lora_modules:
+    - name: customer-support-faq
+      path: /models/loras/customer-support-faq
+    - name: technical-docs
+      path: /models/loras/technical-docs
+    - name: json-output
+      path: /models/loras/json-output
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 64
+    synthetic_input_tokens_mean: 2048
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+    model_selection_strategy: random
+    extra_inputs:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: qwen3-8b-nvfp4-api-c128
+  model: nvidia/Qwen3-8B-NVFP4
+  vllm:
+    max_model_len: 1024
+    gpu_memory_utilization: 0.8
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 128
+    synthetic_input_tokens_mean: 256
+    output_tokens_mean: 256
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: qwen3-8b-nvfp4-api-c64
+  model: nvidia/Qwen3-8B-NVFP4
+  vllm:
+    max_model_len: 4096
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 64
+    synthetic_input_tokens_mean: 256
+    output_tokens_mean: 256
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+    extra_inputs:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: qwen3-8b-nvfp4-rag-16k-c4
+  model: nvidia/Qwen3-8B-NVFP4
+  vllm:
+    max_model_len: 16384
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 4
+    synthetic_input_tokens_mean: 16000
+    output_tokens_mean: 256
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+- name: qwen3-8b-nvfp4-rag-32k-c4
+  model: nvidia/Qwen3-8B-NVFP4
+  vllm:
+    max_model_len: 33792
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 4
+    synthetic_input_tokens_mean: 32768
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+    extra_inputs:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: qwen3-8b-nvfp4-rag-8k-c8
+  model: nvidia/Qwen3-8B-NVFP4
+  vllm:
+    max_model_len: 9216
+    gpu_memory_utilization: 0.9
+    max_num_batched_tokens: 8192
+    dtype: auto
+    tensor_parallel_size: 2
+  aiperf:
+    endpoint_type: chat
+    streaming: true
+    concurrency: 8
+    synthetic_input_tokens_mean: 8192
+    output_tokens_mean: 512
+    request_count: 500
+    warmup_request_count: 5
+    dataset_sampling_strategy: shuffle
+    extra_inputs:
+      chat_template_kwargs:
+        enable_thinking: false

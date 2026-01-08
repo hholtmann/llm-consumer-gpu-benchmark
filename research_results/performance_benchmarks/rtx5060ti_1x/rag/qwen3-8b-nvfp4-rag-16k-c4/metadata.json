@@ -1,0 +1,34 @@
+{
+  "benchmark_name": "qwen3-8b-nvfp4-rag-16k-c4",
+  "model": "nvidia/Qwen3-8B-NVFP4",
+  "suite_name": "RTX 5060 Ti 1x GPU",
+  "run_id": "20251218_001456",
+  "timestamp": "2025-12-18T03:34:52.486931",
+  "gpu": "RTX 5060 Ti x1",
+  "instance_id": 28971205,
+  "vllm_config": {
+    "max_model_len": 17408,
+    "gpu_memory_utilization": 0.9,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto"
+  },
+  "aiperf_config": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 4,
+    "synthetic_input_tokens_mean": 16384,
+    "output_tokens_mean": 512,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle",
+    "extra_inputs": {
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    }
+  },
+  "lm_eval_config": {},
+  "benchmark_type": "performance",
+  "status": "success",
+  "used_fp8_kv_cache": false
+}

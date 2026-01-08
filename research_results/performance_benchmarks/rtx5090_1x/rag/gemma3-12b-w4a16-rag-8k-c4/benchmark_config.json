@@ -1,0 +1,18 @@
+{
+  "name": "gemma3-12b-w4a16-rag-8k-c4",
+  "model": "RedHatAI/gemma-3-12b-it-quantized.w4a16",
+  "vllm": {
+    "max_model_len": 9216,
+    "gpu_memory_utilization": 0.9,
+    "dtype": "auto"
+  },
+  "aiperf": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 4,
+    "synthetic_input_tokens_mean": 8192,
+    "output_tokens_mean": 512,
+    "request_count": 500,
+    "warmup_request_count": 5
+  }
+}

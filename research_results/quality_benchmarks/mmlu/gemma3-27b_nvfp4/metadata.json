@@ -1,0 +1,25 @@
+{
+  "benchmark_name": "gemma3-27b-nvfp4-mmlu",
+  "model": "holtmann/gemma-3-27b-it-NVFP4",
+  "suite_name": "RTX 5090 Quality Evaluation",
+  "run_id": "20251203_033750",
+  "timestamp": "2025-12-03T04:32:38.247842",
+  "gpu": "RTX 5090 x1",
+  "instance_id": 28447493,
+  "vllm_config": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "dtype": "auto",
+    "enable_chunked_prefill": true,
+    "max_num_batched_tokens": 512
+  },
+  "aiperf_config": {},
+  "lm_eval_config": {
+    "tasks": "mmlu",
+    "num_fewshot": 5,
+    "limit": 500,
+    "batch_size": 32
+  },
+  "benchmark_type": "quality",
+  "status": "success"
+}

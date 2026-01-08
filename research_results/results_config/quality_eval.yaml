@@ -1,0 +1,166 @@
+name: RTX 5090 Quality Evaluation
+description: Task-aligned quality benchmarks using lm_eval on RTX 5090 32GB
+instance:
+  gpu_type: RTX 5090
+  gpu_count: 1
+  disk_space_gb: 150
+  image: holtmann/llm-benchmark:latest
+  max_bid_price: 2.0
+  ssh_timeout: 900
+  min_download_speed: 1500
+  blacklist_machines:
+  - 47395
+s3:
+  bucket: ${S3_BUCKET_NAME}
+  prefix: benchmarks/quality_eval
+  upload_json: true
+  upload_csv: true
+  upload_logs: true
+  compress_logs: true
+  timestamp_format: '%Y%m%d_%H%M%S'
+benchmarks:
+- name: gemma3-12b_bf16-gsm8k
+  model: google/gemma-3-12b-it
+  task: gsm8k
+  lm_eval:
+    tasks: gsm8k
+    num_fewshot: 8
+    batch_size: auto
+- name: gemma3-12b_bf16-hellaswag
+  model: google/gemma-3-12b-it
+  task: hellaswag
+  lm_eval:
+    tasks: hellaswag
+    num_fewshot: 0
+    batch_size: auto
+- name: gemma3-12b_nvfp4-gsm8k
+  model: holtmann/gemma-3-12b-it-NVFP4
+  task: gsm8k
+  lm_eval:
+    tasks: gsm8k
+    num_fewshot: 8
+    batch_size: auto
+- name: gemma3-12b_nvfp4-hellaswag
+  model: holtmann/gemma-3-12b-it-NVFP4
+  task: hellaswag
+  lm_eval:
+    tasks: hellaswag
+    num_fewshot: 0
+    batch_size: auto
+- name: gemma3-12b_nvfp4-mmlu
+  model: holtmann/gemma-3-12b-it-NVFP4
+  task: mmlu
+  lm_eval:
+    tasks: mmlu
+    num_fewshot: 5
+    limit: 500
+    batch_size: 8
+- name: gemma3-12b_w4a16-gsm8k
+  model: RedHatAI/gemma-3-12b-it-quantized.w4a16
+  task: gsm8k
+  lm_eval:
+    tasks: gsm8k
+    num_fewshot: 8
+    batch_size: auto
+- name: gemma3-12b_w4a16-hellaswag
+  model: RedHatAI/gemma-3-12b-it-quantized.w4a16
+  task: hellaswag
+  lm_eval:
+    tasks: hellaswag
+    num_fewshot: 0
+    batch_size: auto
+- name: gemma3-12b_w4a16-mmlu
+  model: RedHatAI/gemma-3-12b-it-quantized.w4a16
+  task: mmlu
+  lm_eval:
+    tasks: mmlu
+    num_fewshot: 5
+    batch_size: 8
+- name: gemma3-27b_nvfp4-gsm8k
+  model: holtmann/gemma-3-27b-it-NVFP4
+  task: gsm8k
+  lm_eval:
+    tasks: gsm8k
+    num_fewshot: 8
+    batch_size: auto
+- name: gemma3-27b_nvfp4-hellaswag
+  model: holtmann/gemma-3-27b-it-NVFP4
+  task: hellaswag
+  lm_eval:
+    tasks: hellaswag
+    num_fewshot: 0
+    batch_size: auto
+- name: gemma3-27b_nvfp4-mmlu
+  model: holtmann/gemma-3-27b-it-NVFP4
+  task: mmlu
+  lm_eval:
+    tasks: mmlu
+    num_fewshot: 5
+    limit: 500
+    batch_size: 32
+- name: gemma3-27b_w4a16-gsm8k
+  model: RedHatAI/gemma-3-27b-it-quantized.w4a16
+  task: gsm8k
+  lm_eval:
+    tasks: gsm8k
+    num_fewshot: 8
+    batch_size: auto
+- name: gemma3-27b_w4a16-hellaswag
+  model: RedHatAI/gemma-3-27b-it-quantized.w4a16
+  task: hellaswag
+  lm_eval:
+    tasks: hellaswag
+    num_fewshot: 0
+    batch_size: auto
+- name: gemma3-27b_w4a16-mmlu
+  model: RedHatAI/gemma-3-27b-it-quantized.w4a16
+  task: mmlu
+  lm_eval:
+    tasks: mmlu
+    num_fewshot: 5
+    limit: 500
+    batch_size: 32
+- name: qwen3-8b_bf16-gsm8k
+  model: Qwen/Qwen3-8B
+  task: gsm8k
+  lm_eval:
+    tasks: gsm8k
+    num_fewshot: 8
+    batch_size: auto
+- name: qwen3-8b_bf16-hellaswag
+  model: Qwen/Qwen3-8B
+  task: hellaswag
+  lm_eval:
+    tasks: hellaswag
+    num_fewshot: 0
+    batch_size: auto
+- name: qwen3-8b_bf16-mmlu
+  model: Qwen/Qwen3-8B
+  task: mmlu
+  lm_eval:
+    tasks: mmlu
+    num_fewshot: 5
+    limit: 500
+    batch_size: 8
+- name: qwen3-8b_nvfp4-gsm8k
+  model: nvidia/Qwen3-8B-NVFP4
+  task: gsm8k
+  lm_eval:
+    tasks: gsm8k
+    num_fewshot: 8
+    batch_size: auto
+- name: qwen3-8b_nvfp4-hellaswag
+  model: nvidia/Qwen3-8B-NVFP4
+  task: hellaswag
+  lm_eval:
+    tasks: hellaswag
+    num_fewshot: 0
+    batch_size: auto
+- name: qwen3-8b_nvfp4-mmlu
+  model: nvidia/Qwen3-8B-NVFP4
+  task: mmlu
+  lm_eval:
+    tasks: mmlu
+    num_fewshot: 5
+    limit: 500
+    batch_size: 8

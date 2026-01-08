@@ -1,0 +1,43 @@
+{
+  "name": "qwen3-8b-nvfp4-agentic-lora-c32",
+  "model": "nvidia/Qwen3-8B-NVFP4",
+  "vllm": {
+    "max_model_len": 4096,
+    "gpu_memory_utilization": 0.9,
+    "max_num_batched_tokens": 8192,
+    "dtype": "auto",
+    "tensor_parallel_size": 2,
+    "enable_lora": true,
+    "max_loras": 3,
+    "lora_modules": [
+      {
+        "name": "customer-support-faq",
+        "path": "/models/loras/customer-support-faq"
+      },
+      {
+        "name": "technical-docs",
+        "path": "/models/loras/technical-docs"
+      },
+      {
+        "name": "json-output",
+        "path": "/models/loras/json-output"
+      }
+    ]
+  },
+  "aiperf": {
+    "endpoint_type": "chat",
+    "streaming": true,
+    "concurrency": 32,
+    "synthetic_input_tokens_mean": 2048,
+    "output_tokens_mean": 512,
+    "request_count": 500,
+    "warmup_request_count": 5,
+    "dataset_sampling_strategy": "shuffle",
+    "model_selection_strategy": "random",
+    "extra_inputs": {
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    }
+  }
+}

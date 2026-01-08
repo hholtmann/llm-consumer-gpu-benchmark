@@ -1,0 +1,65 @@
+# Environment and secrets
+.env
+*.env
+!.env.example
+
+# Claude Code
+.claude/
+
+# Virtual environments
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
+*.log
+logs/
+benchmark.log
+
+# Results and temporary files
+results/
+temp/
+*.jsonl
+*.csv
+profile_export.jsonl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Intermediate processing
+s3_final/
+s3_profiles/
+
+# Internal notes
+TODO.md
+
+# Symlinks to external repos
+research_paper
