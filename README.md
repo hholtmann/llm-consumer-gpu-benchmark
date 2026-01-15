@@ -330,11 +330,14 @@ docker build -t my-benchmark:latest -f Dockerfile .
 If you use this benchmark suite in your research, please cite:
 
 ```bibtex
-@article{yourname2024llmbenchmark,
-  title={Consumer GPU LLM Inference: A Comprehensive Benchmark Study},
-  author={Your Name},
-  journal={arXiv preprint arXiv:XXXX.XXXXX},
-  year={2024}
+@misc{knoop2026privatellminferenceconsumer,
+      title={Private LLM Inference on Consumer Blackwell GPUs: A Practical Guide for Cost-Effective Local Deployment in SMEs}, 
+      author={Jonathan Knoop and Hendrik Holtmann},
+      year={2026},
+      eprint={2601.09527},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2601.09527}, 
 }
 ```
 
